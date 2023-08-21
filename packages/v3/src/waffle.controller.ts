@@ -43,6 +43,9 @@ export class WaffleController
         mode: "index",
         position: "cursor",
       },
+      legend: {
+        display: true,
+      },
       colors: {
         enabled: false,
       },
@@ -105,7 +108,7 @@ export class WaffleController
   ): void {
     super.updateElements(elements, start, count, mode);
     if (mode === "reset") return;
-    const { column = 5, row = 5, gap = 5 } = this.options;
+    const { column = 5, row = 5, gap = 5, radius = 4 } = this.options;
 
     for (let i = start; i < start + count; i++) {
       const properties = {
@@ -122,13 +125,20 @@ export class WaffleController
         row,
         column,
         gap,
+        radius,
       };
 
       this.updateElement(elements[i], i, properties, mode);
     }
   }
 
-  generateGrid(row: number, column: number, gap: number) {
+  generateGrid(
+    row: number,
+    column: number,
+    gap: number,
+    radius: number,
+    fillColor: string
+  ) {
     const ctx = this.chart.ctx;
     const cell = {
       width: (this.chart.chartArea.width - gap * (column - 1)) / column,
@@ -140,8 +150,8 @@ export class WaffleController
       for (let j = 0; j < row; j++) {
         const x = i * (cell.width + gap);
         const y = j * (cell.height + gap);
-        ctx.fillStyle = "rgb(0,0,0, 0.05)";
-        ctx.roundRect(x, y, cell.width, cell.height, 4);
+        ctx.fillStyle = fillColor;
+        ctx.roundRect(x, y, cell.width, cell.height, radius);
       }
     }
     ctx.closePath();
@@ -207,9 +217,16 @@ export class WaffleController
       return;
     }
 
-    const { column, row, fill, gap } = this.options;
+    const {
+      column,
+      row,
+      fill,
+      gap,
+      radius = 4,
+      fillColor = "rgb(0,0,0, 0.05)",
+    } = this.options;
     if (column && row && fill && gap) {
-      this.generateGrid(row, column, gap);
+      this.generateGrid(row, column, gap, radius, fillColor);
     }
 
     super.draw();

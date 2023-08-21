@@ -14,10 +14,12 @@ import { WaffleElementOptions } from "./waffle.element";
 
 export interface WaffleChartOptions {
   fill: boolean;
+  fillColor: string;
   row: number;
   column: number;
   gap: number;
   total: number;
+  radius: number;
 }
 
 export interface WaffleControllerDatasetOptions

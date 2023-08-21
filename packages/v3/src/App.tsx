@@ -5,8 +5,6 @@ import "./App.css";
 import {
   ChartData,
   Chart as ChartJS,
-  BarController,
-  BarElement,
   LinearScale,
   CategoryScale,
   ChartOptions,
@@ -18,6 +16,7 @@ function App() {
     labels: ["A", "B", "C"],
     datasets: [
       {
+        label: "hehehhe",
         data: [10, 3, 5],
         backgroundColor: [
           "rgba(255, 26, 104, 1)",
@@ -30,16 +29,16 @@ function App() {
   const options: ChartOptions<"waffle"> = {
     row: 8,
     column: 8,
-    gap: 8,
-    // total: 50,
+    gap: 16,
+    total: 50,
     fill: true,
+    fillColor: "#eee",
+    radius: 8,
   };
 
   ChartJS.register(
     WaffleController,
     WaffleElement,
-    BarController,
-    BarElement,
     LinearScale,
     CategoryScale,
     Tooltip

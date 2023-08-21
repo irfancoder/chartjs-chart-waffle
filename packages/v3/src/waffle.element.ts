@@ -122,7 +122,7 @@ export class WaffleElement
   }
 
   draw(ctx: CanvasRenderingContext2D, chartArea: ChartArea): void {
-    let { x, y, index, column, grid, width, height } = this.getProps([
+    let { x, y, index, column, grid, width, height, radius } = this.getProps([
       "x",
       "y",
       "width",
@@ -130,6 +130,7 @@ export class WaffleElement
       "index",
       "grid",
       "column",
+      "radius",
     ]);
     const options = this.options;
     ctx.beginPath();
@@ -138,7 +139,7 @@ export class WaffleElement
     ctx.beginPath();
     while (grid > 0) {
       ctx.fillStyle = options.backgroundColor;
-      ctx.roundRect(x, y, width, height, 4);
+      ctx.roundRect(x, y, width, height, radius);
 
       x += this.increment.column;
       grid--;
@@ -265,6 +266,7 @@ export interface WaffleElementProps {
   column: number;
   row: number;
   total: number;
+  radius: number;
 }
 
 // export interface WafflePoint {
