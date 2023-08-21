@@ -1,28 +1,21 @@
 import {
-  AnimationOptions,
   Chart,
   DatasetController,
   UpdateMode,
-  ChartItem,
-  ScriptableAndArrayOptions,
-  ControllerDatasetOptions,
-  CommonHoverOptions,
-  ChartConfiguration,
-  ScriptableContext,
   ChartDataset,
-  TooltipItem,
+  DatasetControllerChartComponent,
 } from "chart.js";
-import { WaffleElement, WaffleElementOptions } from "./waffle.element";
-import patch from "./patch";
+import { WaffleElement } from "./waffle.element";
 import { AnyObject } from "chart.js/types/basic";
 import { _DeepPartialArray } from "chart.js/types/utils";
+import { requireVersion } from "./utils";
 
-export class WaffleController extends DatasetController<
-  "waffle",
-  WaffleElement
-> {
-  static readonly id = "waffle";
-  options: Chart<"waffle">["options"];
+export class WaffleController
+  extends DatasetController<"waffle", WaffleElement>
+  implements DatasetControllerChartComponent
+{
+  static id: string = "waffle";
+  readonly id: string = WaffleController.id;
 
   static readonly defaults = {
     datasets: {
@@ -39,26 +32,16 @@ export class WaffleController extends DatasetController<
     maintainAspectRatio: false,
     dataElementType: WaffleElement.id,
   };
+  readonly defaults = WaffleController.defaults;
+
+  options: Chart<"waffle">["options"];
 
   static readonly overrides = {
     plugins: {
       tooltip: {
         enabled: true,
         mode: "index",
-        // callbacks: {
-        //   title() {
-        //     // Title doesn't make sense for scatter since we format the data as a point
-        //     return "";
-        //   },
-        //   label(item: TooltipItem<"waffle">) {
-        //     if (item.formattedValue == null) {
-        //       return item.chart.data?.labels?.[item.dataIndex];
-        //     }
-        //     return `${item.chart.data?.labels?.[item.dataIndex]}: ${
-        //       item.formattedValue
-        //     }`;
-        //   },
-        // },
+        position: "cursor",
       },
       colors: {
         enabled: false,
@@ -83,6 +66,12 @@ export class WaffleController extends DatasetController<
   constructor(chart: Chart, datasetIndex: number) {
     super(chart, datasetIndex);
     this.options = chart.options;
+  }
+
+  defaultRoutes?: { [property: string]: string } | undefined;
+  beforeRegister?(): void {
+    if (requireVersion("chart.js", "3.9", Chart.version))
+      throw new Error("Method not implemented.");
   }
 
   initialize(): void {
@@ -155,7 +144,6 @@ export class WaffleController extends DatasetController<
         ctx.roundRect(x, y, cell.width, cell.height, 4);
       }
     }
-
     ctx.closePath();
     ctx.fill();
     ctx.save();
@@ -228,52 +216,5 @@ export class WaffleController extends DatasetController<
     // meta.data.forEach((point) => {
     //   point.draw.call(point, this.chart.ctx, this.chart.chartArea);
     // });
-  }
-}
-
-export interface WaffleChartOptions {
-  fill: boolean;
-  row: number;
-  column: number;
-  gap: number;
-  total: number;
-}
-
-export interface WaffleControllerDatasetOptions
-  extends ControllerDatasetOptions,
-    ScriptableAndArrayOptions<
-      WaffleElementOptions,
-      ScriptableContext<"waffle">
-    >,
-    ScriptableAndArrayOptions<CommonHoverOptions, ScriptableContext<"waffle">>,
-    AnimationOptions<"waffle"> {}
-
-declare module "chart.js" {
-  interface ChartTypeRegistry {
-    waffle: {
-      chartOptions: WaffleChartOptions;
-      datasetOptions: WaffleControllerDatasetOptions;
-      defaultDataPoint: number;
-      metaExtensions: Record<string, never>;
-      parsedDataType: {
-        x: number;
-        y: number;
-      };
-      scales: keyof CartesianScaleTypeRegistry;
-    };
-  }
-}
-
-export class WaffleChart<
-  DATA extends unknown[] = number[],
-  LABEL = string
-> extends Chart<"waffle", DATA, LABEL> {
-  static id = WaffleController.id;
-
-  constructor(
-    item: ChartItem,
-    config: Omit<ChartConfiguration<"waffle", DATA, LABEL>, "type">
-  ) {
-    super(item, patch("waffle", config, WaffleController, WaffleElement));
   }
 }
