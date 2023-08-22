@@ -1,7 +1,7 @@
 {
-  "name": "v3",
+  "name": "chartjs-chart-waffle",
   "private": true,
-  "version": "0.0.0",
+  "version": "3.9.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,13 +9,24 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "main": "dist/chartjs-chart-waffle.es.js",
+  "module": "dist/chartjs-chart-waffle.es.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    "types": "./types/index.d.ts",
+    "import": "./dist/chartjs-chart-waffle.esm.js",
+    "require": "./dist/chartjs-chart-waffle.umd.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
   "dependencies": {
-    "d3": "^7.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/d3": "^7.4.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
@@ -28,5 +39,8 @@
     "react-chartjs-2": "^5.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
+  },
+  "peerDependencies": {
+    "chart.js": "^3.9.1"
   }
 }

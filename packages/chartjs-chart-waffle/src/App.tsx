@@ -1,5 +1,5 @@
 import { Chart } from "react-chartjs-2";
-import { WaffleController, WaffleElement } from ".";
+import { WaffleController, WaffleElement } from "chartjs-chart-waffle";
 
 import "./App.css";
 import {
