@@ -75,7 +75,7 @@ export class WaffleController
   defaultRoutes?: { [property: string]: string } | undefined;
   beforeRegister?(): void {
     if (requireVersion("chart.js", "3.9", Chart.version))
-      throw new Error("Method not implemented.");
+      throw new Error("Version not supported. Only v3.9");
   }
 
   initialize(): void {
