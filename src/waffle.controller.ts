@@ -9,6 +9,7 @@ import { WaffleElement } from "./waffle.element";
 import { AnyObject } from "chart.js/types/basic";
 import { _DeepPartialArray } from "chart.js/types/utils";
 import { requireVersion } from "./utils";
+import "../types/index";
 
 export class WaffleController
   extends DatasetController<"waffle", WaffleElement>

@@ -1,5 +1,5 @@
 import { Chart } from "react-chartjs-2";
-import { WaffleController, WaffleElement } from "chartjs-chart-waffle";
+import { WaffleController, WaffleElement } from ".";
 
 import "./App.css";
 import {
@@ -45,12 +45,25 @@ function App() {
   );
 
   return (
-    <>
-      <p>hello waffle chartjs</p>
-      <div style={{ height: 500, width: 500 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "20px",
+      }}
+    >
+      <p>Waffle ChartJS Example</p>
+      <div
+        style={{
+          height: 500,
+          width: 500,
+        }}
+      >
         <Chart type="waffle" data={data} options={options} />
       </div>
-    </>
+    </div>
   );
 }
 
